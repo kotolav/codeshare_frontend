@@ -1,65 +1,66 @@
 export default {
-  // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+   // Target: https://go.nuxtjs.dev/config-target
+   target: 'static',
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
-  head: {
-    title: 'task-chooser',
-    htmlAttrs: {
-      lang: 'en',
-    },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' },
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap',
+   // Global page headers: https://go.nuxtjs.dev/config-head
+   head: {
+      title: 'task-chooser',
+      htmlAttrs: {
+         lang: 'en',
       },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&display=swap',
-      },
-    ],
-  },
+      meta: [
+         { charset: 'utf-8' },
+         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+         { hid: 'description', name: 'description', content: '' },
+         { name: 'format-detection', content: 'telephone=no' },
+      ],
+      link: [
+         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+         {
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap',
+         },
+         {
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
+         },
+         {
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&display=swap',
+         },
+      ],
+   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+   // Global CSS: https://go.nuxtjs.dev/config-css
+   css: [],
 
-  styleResources: {
-    scss: ['@/assets/scss/variables.scss', '@/assets/scss/mixins.scss'],
-  },
+   styleResources: {
+      scss: ['@/assets/scss/variables.scss', '@/assets/scss/mixins.scss'],
+   },
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+   plugins: [],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+   // Auto import components: https://go.nuxtjs.dev/config-components
+   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
-    '@nuxtjs/composition-api/module',
-  ],
+   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+   buildModules: [
+      // https://go.nuxtjs.dev/typescript
+      '@nuxt/typescript-build',
+      '@nuxtjs/composition-api/module',
+      '@nuxtjs/style-resources',
+   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-  ],
+   // Modules: https://go.nuxtjs.dev/config-modules
+   modules: [
+      // https://go.nuxtjs.dev/axios
+      '@nuxtjs/axios',
+   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+   // Axios module configuration: https://go.nuxtjs.dev/config-axios
+   axios: {},
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+   // Build Configuration: https://go.nuxtjs.dev/config-build
+   build: {},
 }
