@@ -32,7 +32,7 @@ export default {
    },
 
    // Global CSS: https://go.nuxtjs.dev/config-css
-   css: [],
+   css: ['~assets/scss/main.scss'],
 
    styleResources: {
       scss: ['@/assets/scss/variables.scss', '@/assets/scss/mixins.scss'],
@@ -49,13 +49,13 @@ export default {
       // https://go.nuxtjs.dev/typescript
       '@nuxt/typescript-build',
       '@nuxtjs/composition-api/module',
-      '@nuxtjs/style-resources',
    ],
 
    // Modules: https://go.nuxtjs.dev/config-modules
    modules: [
       // https://go.nuxtjs.dev/axios
       '@nuxtjs/axios',
+      '@nuxtjs/style-resources',
    ],
 
    // Axios module configuration: https://go.nuxtjs.dev/config-axios

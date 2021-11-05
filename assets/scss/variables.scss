@@ -1,0 +1,25 @@
+$break_lg: 1100px;
+$break_md: 960px;
+$break_sm: 780px;
+$break_xs: 560px;
+$break_xxs: 320px;
+
+$default_text: #efefef;
+$link_color: #6795de;
+$link_hover_color: #7ca4e3;
+
+// prettier-ignore
+$kata_rank: (
+  ['beta', 8, 7]: #e6e6e6,
+  [6, 5]: #ecb613,
+  [4, 3]: #3c7ebb,
+  [2, 1]: #866cc7
+);
+
+$kata_rank_bg: #181919;
+$kata_rank_white: #e6e6e6;
+$kata_rank_yellow: #ecb613;
+$kata_rank_blue: #3c7ebb;
+$kata_rank_purple: #866cc7;
+
+$tag_bg_color: rgba(0, 0, 0, 0.1);
