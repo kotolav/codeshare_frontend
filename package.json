@@ -17,6 +17,7 @@
     "@nuxtjs/dayjs": "^1.4.1",
     "@types/lodash": "^4.14.176",
     "core-js": "^3.15.1",
+    "highlightjs": "^9.16.2",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.7"
   },
