@@ -42,6 +42,7 @@ export default {
    plugins: [
       '~/plugins/languageNameFormatter.ts',
       '~/plugins/dateDiffHuman.ts',
+      '~/plugins/textareaAutosize.js',
    ],
 
    // Auto import components: https://go.nuxtjs.dev/config-components
@@ -60,6 +61,13 @@ export default {
       '@nuxtjs/axios',
       '@nuxtjs/style-resources',
       '@nuxtjs/dayjs',
+      [
+         'vue-toastification/nuxt',
+         {
+            timeout: 3000,
+            draggable: false,
+         },
+      ],
    ],
 
    dayjs: {
