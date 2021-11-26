@@ -2,7 +2,7 @@
    <header class="header">
       <div class="header__content">
          <kata-rank :rank="rank" />
-         <h4 class="title">{{ title }}</h4>
+         <h4 class="name">{{ name }}</h4>
       </div>
       <div class="header__tags">
          <kata-tags-list :tags="tags" />
@@ -16,7 +16,7 @@ import { KataRank } from '~/types/types'
 
 export default defineComponent({
    props: {
-      title: {
+      name: {
          type: String,
          required: true,
       },
@@ -32,7 +32,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
    &__content {
       display: flex;
@@ -43,7 +43,7 @@ export default defineComponent({
       margin-top: 5px;
    }
 }
-.title {
+.name {
    display: inline-block;
    font-size: 18px;
    color: $default_text;
