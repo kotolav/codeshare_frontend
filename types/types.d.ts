@@ -4,12 +4,13 @@ export interface Solution {
    id: number
    code: string
    language: string
-   date: number
-   comment?: string
+   solvedAt: number
+   comment?: string | null
 }
 
 export interface EditSolution extends Solution {
    isShowing: boolean
+   isEditingComment?: boolean
 }
 
 export type SolutionsList = Solution[]
@@ -18,7 +19,7 @@ export interface Kata {
    id: string
    rank: KataRank
    solutions: SolutionsList
-   title: string
+   name: string
    description: string
    tags: string[]
 }
