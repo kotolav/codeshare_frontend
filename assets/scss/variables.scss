@@ -5,8 +5,11 @@ $break_xs: 560px;
 $break_xxs: 320px;
 
 $default_text: #efefef;
+$gray_text: #a7a7a7;
+$comment_text: #d3d3d3;
 $link_color: #6795de;
-$link_hover_color: #7ca4e3;
+$link_hover_color: #88afef;
+$code_background_color: rgba(0, 0, 0, 0.4);
 
 // prettier-ignore
 $kata_rank: (
@@ -23,3 +26,4 @@ $kata_rank_blue: #3c7ebb;
 $kata_rank_purple: #866cc7;
 
 $tag_bg_color: rgba(0, 0, 0, 0.1);
+//$tag_bg_color: #363636;
