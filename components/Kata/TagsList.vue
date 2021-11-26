@@ -18,7 +18,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tags {
    line-height: 1.2;
    &__item {
@@ -29,6 +29,8 @@ export default defineComponent({
       text-transform: uppercase;
       background-color: $tag_bg_color;
       line-height: 1;
+      vertical-align: bottom;
+      //box-shadow: 0 0 4px #545454;
 
       &:not(:last-child) {
          margin-right: 0.5em;
