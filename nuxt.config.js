@@ -1,6 +1,17 @@
 export default {
    // Target: https://go.nuxtjs.dev/config-target
-   target: 'static',
+   target: 'server',
+   server: {
+      timing: true,
+   },
+
+   googleFonts: {
+      preload: true,
+      families: {
+         Roboto: [300, 400, 700],
+         Lato: [400, 700],
+      },
+   },
 
    // Global page headers: https://go.nuxtjs.dev/config-head
    head: {
@@ -16,18 +27,22 @@ export default {
       ],
       link: [
          { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-         {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap',
-         },
-         {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
-         },
-         {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&display=swap',
-         },
+         // {
+         //    rel: 'stylesheet',
+         //    href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap',
+         // },
+         // {
+         //    rel: 'stylesheet',
+         //    href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
+         // },
+         // {
+         //    rel: 'stylesheet',
+         //    href: 'https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&display=swap',
+         // },
+         // {
+         //    rel: 'stylesheet',
+         //    href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap',
+         // },
       ],
    },
 
@@ -53,6 +68,7 @@ export default {
       // https://go.nuxtjs.dev/typescript
       '@nuxt/typescript-build',
       '@nuxtjs/composition-api/module',
+      '@nuxtjs/google-fonts',
    ],
 
    // Modules: https://go.nuxtjs.dev/config-modules
@@ -61,13 +77,6 @@ export default {
       '@nuxtjs/axios',
       '@nuxtjs/style-resources',
       '@nuxtjs/dayjs',
-      [
-         'vue-toastification/nuxt',
-         {
-            timeout: 3000,
-            draggable: false,
-         },
-      ],
    ],
 
    dayjs: {
@@ -82,7 +91,9 @@ export default {
    },
 
    // Axios module configuration: https://go.nuxtjs.dev/config-axios
-   axios: {},
+   axios: {
+      baseURL: `http://localhost:3000/api/`,
+   },
 
    // Build Configuration: https://go.nuxtjs.dev/config-build
    build: {},
