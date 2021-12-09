@@ -2,24 +2,27 @@
    <ul class="footer">
       <li class="footer__item">
          Решено:
-         <time :datetime="isoDateTime" :title="dateTime" class="footer__time">{{
-            solution.solvedAt | dateDiffHuman
-         }}</time>
+         <time :datetime="isoDateTime" :title="dateTime" class="footer__time"
+            >{{ solution.solvedAt | dateDiffHuman }}
+         </time>
       </li>
       <li v-if="canEdit" class="footer__item">
-         <a class="footer__link" @click.prevent="addComment"
-            >{{
-               solution.comment ? 'Редактировать' : 'Добавить'
-            }}
-            комментарий</a
-         >
+         <a class="footer__link" @click.prevent="addComment">{{
+            solution.comment
+               ? 'Редактировать комментарий'
+               : 'Добавить комментарий'
+         }}</a>
       </li>
       <li v-if="canEdit" class="footer__item">
          <a
             class="footer__link"
-            :class="{ 'footer__link--inactive': visibilityIsModifying }"
+            :class="{ 'footer__link--inactive': solutionIsToggling }"
             @click.prevent="toggleSolutionVisibility"
-            >{{ showHideLabel }}</a
+            >{{
+               solution.isShowing
+                  ? 'Скрывать это решение'
+                  : 'Показывать решение'
+            }}</a
          >
       </li>
    </ul>
@@ -30,13 +33,11 @@ import {
    computed,
    defineComponent,
    inject,
-   ref,
    useRoute,
-   useStore,
 } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 import { EditKata, EditSolution } from '~/types/types'
-import { EditKataRootState } from '~/store/editKata'
+import { useEditKatas } from '~/helpers/editKatas'
 
 export default defineComponent({
    props: {
@@ -48,10 +49,11 @@ export default defineComponent({
 
    setup(props, context) {
       const canEdit = inject<Boolean>('canEdit', false)
-      const kataId = inject<EditKata['id']>('kataId')
-      const store = useStore<EditKataRootState>()
+      const kataId = inject<EditKata['id']>('kataId', '')
       const route = useRoute()
-      const visibilityIsModifying = ref(false)
+      const { solutionIsToggling, toggleSolution } = useEditKatas(
+         route.value.params.id
+      )
 
       const isoDateTime = computed(() =>
          dayjs.unix(props.solution.solvedAt).toISOString()
@@ -60,22 +62,15 @@ export default defineComponent({
          dayjs.unix(props.solution.solvedAt).format('DD-MM-YYYY в HH:mm:ss')
       )
 
-      const showHideLabel = computed(() => {
-         return props.solution.isShowing
-            ? 'Скрывать это решение'
-            : 'Показывать решение'
-      })
-
       const toggleSolutionVisibility = async () => {
-         if (!visibilityIsModifying.value) {
-            visibilityIsModifying.value = true
-            await store.dispatch('editKata/toggleSolutionVisibility', {
-               token: route.value.params.id,
-               kataId,
-               solutionId: props.solution.id,
-               visibility: !props.solution.isShowing,
-            })
-            visibilityIsModifying.value = false
+         if (!solutionIsToggling.value) {
+            await toggleSolution(
+               {
+                  kataId,
+                  solutionId: props.solution.id,
+               },
+               !props.solution.isShowing
+            )
          }
       }
 
@@ -87,10 +82,9 @@ export default defineComponent({
          canEdit,
          isoDateTime,
          dateTime,
-         showHideLabel,
          toggleSolutionVisibility,
          addComment,
-         visibilityIsModifying,
+         solutionIsToggling,
       }
    },
 })
@@ -101,10 +95,11 @@ export default defineComponent({
    display: flex;
    flex-wrap: wrap;
    font-size: 15px;
-   font-family: 'Roboto', sans-serif;
+   font-family: $font_roboto;
 
    &__item {
       color: $gray_text;
+
       &:not(:last-child):after {
          display: inline-block;
          content: '•';
@@ -114,6 +109,7 @@ export default defineComponent({
          color: rgba(255, 255, 255, 0.3);
       }
    }
+
    &__time {
       color: $default_text;
    }
@@ -132,6 +128,7 @@ export default defineComponent({
 
       &--inactive {
          color: $gray_text;
+
          &:hover {
             color: inherit;
          }
