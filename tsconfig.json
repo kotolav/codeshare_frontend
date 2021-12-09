@@ -20,7 +20,7 @@
          "@nuxtjs/axios",
          "@types/node",
          "@nuxtjs/dayjs",
-         "dayjs/plugin/relativeTime",
+         "dayjs/plugin/relativeTime"
       ]
    },
    "exclude": ["node_modules", ".nuxt", "dist"]
