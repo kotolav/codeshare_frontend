@@ -1,30 +1,41 @@
 <template>
    <div class="comment">
-      <textarea-autosize
-         ref="textArea"
-         v-model="textModel"
-         class="comment__form"
-         placeholder="Добавьте комментарий к решению"
-         @click.native="onClick"
-      ></textarea-autosize>
-      <div v-if="isEditing" class="comment__footer">
-         <button class="comment__button" @click="saveComment">Сохранить</button>
-         <button class="comment__button" @click="deleteComment">Удалить</button>
-      </div>
+      <template v-if="canEdit">
+         <textarea-autosize
+            ref="textArea"
+            v-model="textModel"
+            class="comment__form"
+            placeholder="Добавьте комментарий к решению"
+            @click.native="onClick"
+         ></textarea-autosize>
+         <div v-if="isEditing" class="comment__footer">
+            <button class="comment__button" @click="onSaveComment">
+               Сохранить
+            </button>
+            <button class="comment__button" @click="onDeleteComment">
+               Удалить
+            </button>
+         </div>
+      </template>
+      <template v-else>
+         <p class="comment__title">Комментарий к решению</p>
+         <div class="comment__form">
+            <pre>{{ textModel }}</pre>
+         </div>
+      </template>
    </div>
 </template>
 
 <script lang="ts">
 import {
-   ref,
-   inject,
    defineComponent,
+   inject,
    nextTick,
-   useStore,
+   ref,
    useRoute,
 } from '@nuxtjs/composition-api'
-import { EditKataRootState } from '~/store/editKata'
 import { EditKata, EditSolution } from '~/types/types'
+import { useEditKatas } from '~/helpers/editKatas'
 
 export default defineComponent({
    props: {
@@ -41,20 +52,17 @@ export default defineComponent({
    },
 
    setup(props, context) {
-      const solutionId = inject<EditSolution['id']>('solutionId')
-      const kataId = inject<EditKata['id']>('kataId')
+      const solutionId = inject<EditSolution['id']>('solutionId', 0)
+      const kataId = inject<EditKata['id']>('kataId', '')
+      const canEdit = inject('canEdit', false)
+
       const textArea = ref<any | null>(null)
-      const store = useStore<EditKataRootState>()
       const route = useRoute()
       const textModel = ref(props.comment)
+      const { setComment, deleteComment } = useEditKatas(route.value.params.id)
 
-      const saveComment = () => {
-         store.dispatch('editKata/saveComment', {
-            token: route.value.params.id,
-            kataId,
-            solutionId,
-            comment: textModel.value,
-         })
+      const onSaveComment = () => {
+         setComment({ kataId, solutionId }, textModel.value)
       }
 
       const onClick = () => {
@@ -63,13 +71,9 @@ export default defineComponent({
          }
       }
 
-      const deleteComment = () => {
+      const onDeleteComment = () => {
          textModel.value = ''
-         store.dispatch('editKata/deleteComment', {
-            token: route.value.params.id,
-            kataId,
-            solutionId,
-         })
+         deleteComment({ kataId, solutionId })
       }
 
       const setFocus = () => {
@@ -79,12 +83,13 @@ export default defineComponent({
       }
 
       return {
-         saveComment,
-         deleteComment,
+         onSaveComment,
+         onDeleteComment,
          setFocus,
          onClick,
          textArea,
          textModel,
+         canEdit,
       }
    },
 })
@@ -95,7 +100,7 @@ export default defineComponent({
    &__form {
       display: block;
       box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
+      font-family: $font_roboto;
       border-radius: 0.3em;
       width: 100%;
       min-height: 3em;
@@ -108,36 +113,25 @@ export default defineComponent({
       outline: none;
       transition: 0.3s ease-in-out;
 
+      pre {
+         font-size: inherit;
+         font-family: inherit;
+      }
+
       &:focus {
          color: $comment_text;
          border-color: #767676;
       }
    }
 
+   &__title {
+      color: #efefef;
+      font-size: 15px;
+      margin: 1.5em 0 0.25em;
+   }
+
    &__button {
-      background-color: rgba(0, 0, 0, 0.4);
-      border: 1px solid #303030;
-      color: $gray_text;
-      font-size: 14px;
-      border-radius: 0.4em;
-      padding: 0.5em 1em;
-      cursor: pointer;
-      transition: background-color, color 0.2s ease-in-out;
-
-      &:not(:last-child) {
-         margin-right: 5px;
-      }
-
-      &:hover {
-         //background-color: rgba(0, 0, 0, 0.2);
-         color: $default_text;
-      }
-
-      &:active {
-         transform: translateY(1px);
-         transition-duration: 0.1s;
-         background-color: rgba(0, 0, 0, 0.6);
-      }
+      @include standardButton;
    }
 
    &__footer {
