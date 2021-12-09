@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export default {
    // Target: https://go.nuxtjs.dev/config-target
    target: 'server',
@@ -5,7 +7,13 @@ export default {
       timing: true,
    },
 
+   env: {
+      baseUrl: 'http://localhost:3000',
+      apiServer: 'http://codeshare.local/api',
+   },
+
    googleFonts: {
+      display: 'swap',
       preload: true,
       families: {
          Roboto: [300, 400, 700],
@@ -15,35 +23,21 @@ export default {
 
    // Global page headers: https://go.nuxtjs.dev/config-head
    head: {
-      title: 'task-chooser',
+      title: 'CodeShare',
       htmlAttrs: {
          lang: 'en',
       },
       meta: [
          { charset: 'utf-8' },
          { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-         { hid: 'description', name: 'description', content: '' },
+         {
+            hid: 'description',
+            name: 'description',
+            content: 'CodeShare - делитесь своим кодом с другими!',
+         },
          { name: 'format-detection', content: 'telephone=no' },
       ],
-      link: [
-         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-         // {
-         //    rel: 'stylesheet',
-         //    href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap',
-         // },
-         // {
-         //    rel: 'stylesheet',
-         //    href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
-         // },
-         // {
-         //    rel: 'stylesheet',
-         //    href: 'https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;700&display=swap',
-         // },
-         // {
-         //    rel: 'stylesheet',
-         //    href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap',
-         // },
-      ],
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
    },
 
    // Global CSS: https://go.nuxtjs.dev/config-css
@@ -58,6 +52,7 @@ export default {
 
    // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
    plugins: [
+      '~/plugins/axios.ts',
       '~/plugins/languageNameFormatter.ts',
       '~/plugins/dateDiffHuman.ts',
       '~/plugins/textareaAutosize.js',
@@ -101,9 +96,7 @@ export default {
    },
 
    // Axios module configuration: https://go.nuxtjs.dev/config-axios
-   axios: {
-      baseURL: `http://localhost:3000/api/`,
-   },
+   axios: {},
 
    // Build Configuration: https://go.nuxtjs.dev/config-build
    build: {},
