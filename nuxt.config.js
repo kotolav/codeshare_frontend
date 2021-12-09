@@ -47,7 +47,10 @@ export default {
    },
 
    // Global CSS: https://go.nuxtjs.dev/config-css
-   css: ['~assets/scss/main.scss'],
+   css: [
+      '~assets/scss/main.scss',
+      '~node_modules/vue-multiselect/dist/vue-multiselect.min.css',
+   ],
 
    styleResources: {
       scss: ['@/assets/scss/variables.scss', '@/assets/scss/mixins.scss'],
@@ -58,6 +61,7 @@ export default {
       '~/plugins/languageNameFormatter.ts',
       '~/plugins/dateDiffHuman.ts',
       '~/plugins/textareaAutosize.js',
+      '~/plugins/multiselect.js',
    ],
 
    // Auto import components: https://go.nuxtjs.dev/config-components
@@ -74,9 +78,11 @@ export default {
    // Modules: https://go.nuxtjs.dev/config-modules
    modules: [
       // https://go.nuxtjs.dev/axios
+
       '@nuxtjs/axios',
       '@nuxtjs/style-resources',
       '@nuxtjs/dayjs',
+      'cookie-universal-nuxt',
    ],
 
    dayjs: {
@@ -88,6 +94,10 @@ export default {
          'timezone', // import 'dayjs/plugin/timezone'
          'relativeTime',
       ],
+   },
+
+   loading: {
+      color: '#71d3ff',
    },
 
    // Axios module configuration: https://go.nuxtjs.dev/config-axios
