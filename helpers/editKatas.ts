@@ -1,5 +1,5 @@
-import { ref } from '@nuxtjs/composition-api'
-import { EditKata, EditSolution } from '~/types/types'
+import { computed, ref, set, ssrRef } from '@nuxtjs/composition-api'
+import { EditKata } from '~/types/types'
 import {
    deleteSolutionComment,
    getAllKatas,
@@ -12,83 +12,146 @@ import {
    FindSolution,
    getKataById,
    getSolutionById,
+   getUsedLanguages,
+   getUsedTags,
 } from '~/helpers/kataUtils'
 
-const katas = ref<EditKata[]>([])
-const katasAreLoading = ref(false)
+const katas = ssrRef<EditKata[]>([])
+const token = ssrRef('')
+const katasAreLoading = ssrRef(false)
 
-export function useEditKatas(editToken: string) {
+export function useEditKatas(rawEditToken: string) {
+   if (rawEditToken) {
+      token.value = rawEditToken
+   }
+   const editToken = token.value
+
    async function loadKatas() {
       katasAreLoading.value = true
-      katas.value = await getAllKatas(editToken)
-      katasAreLoading.value = false
+      try {
+         katas.value = await getAllKatas(editToken)
+      } catch (error) {
+         katas.value = []
+      } finally {
+         katasAreLoading.value = false
+      }
    }
 
-   const solutionToggling = ref(false)
-   const solutionCommenting = ref(false)
+   const solutionIsToggling = ref(false)
+   const solutionIsCommenting = ref(false)
 
    async function hideKata(ids: FindKata) {
       const kata = getKataById(katas.value, ids)
       if (kata === undefined) return
       try {
+         solutionIsToggling.value = true
          await hideKataApi(editToken, ids.kataId)
          for (const solution of kata?.solutions) {
             solution.isShowing = false
          }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+         solutionIsToggling.value = false
+      }
    }
 
    async function toggleSolution(ids: FindSolution, show: boolean) {
       const solution = getSolutionById(katas.value, ids)
       if (solution === undefined) return
 
-      solutionToggling.value = true
+      solutionIsToggling.value = true
+      const originalState = solution.isShowing
       try {
+         solution.isShowing = show
          const response = await setSolutionVisibility(
             editToken,
             ids.kataId,
             ids.solutionId,
             show
          )
-         solution.isShowing = show
-      } catch (error) {}
-      solutionToggling.value = false
-   }
-
-   async function setComment(ids: FindSolution, comment: string | null) {
-      const solution = getSolutionById(katas.value, ids)
-      if (solution === undefined) return
-      try {
-         solutionCommenting.value = true
-         let response
-         if (comment === null) {
-            response = await deleteSolutionComment(
-               editToken,
-               ids.kataId,
-               ids.solutionId
-            )
-         } else {
-            response = await setSolutionComment(
-               editToken,
-               ids.kataId,
-               ids.solutionId,
-               comment
-            )
-         }
-         solution.comment = comment
-         solutionCommenting.value = false
-         return true
       } catch (error) {
-         return false
+         // если ошибка от api, вернуть состояние назад
+         solution.isShowing = originalState
+      } finally {
+         solutionIsToggling.value = false
       }
    }
+
+   async function setComment(ids: FindSolution, comment: string) {
+      const solution = getSolutionById(katas.value, ids)
+      if (solution === undefined) return
+      const originalState = {
+         comment: solution?.comment,
+         isEditing: solution?.isEditingComment,
+      }
+      try {
+         solutionIsCommenting.value = true
+         set(solution, 'comment', comment)
+         setCommentEditState(ids, false)
+         const response = await setSolutionComment(
+            editToken,
+            ids.kataId,
+            ids.solutionId,
+            comment
+         )
+      } catch (error) {
+         set(solution, 'comment', originalState.comment)
+         setCommentEditState(ids, !!originalState.isEditing)
+      } finally {
+         solutionIsCommenting.value = false
+      }
+   }
+
+   async function deleteComment(ids: FindSolution) {
+      const solution = getSolutionById(katas.value, ids)
+      if (solution === undefined) return
+
+      const originalState = {
+         comment: solution?.comment,
+         isEditing: solution?.isEditingComment,
+      }
+      try {
+         solutionIsCommenting.value = true
+         set(solution, 'comment', null)
+         setCommentEditState(ids, false)
+         const response = await deleteSolutionComment(
+            editToken,
+            ids.kataId,
+            ids.solutionId
+         )
+      } catch (error) {
+         set(solution, 'comment', originalState.comment)
+         setCommentEditState(ids, !!originalState.isEditing)
+      } finally {
+         solutionIsCommenting.value = false
+      }
+   }
+
+   function setCommentEditState(ids: FindSolution, isEditing: boolean) {
+      const solution = getSolutionById(katas.value, ids)
+      if (solution === undefined) return
+      set(solution, 'isEditingComment', isEditing)
+   }
+
+   const usedLanguages = computed(() => {
+      return getUsedLanguages(katas.value)
+   })
+
+   const usedTags = computed(() => {
+      return getUsedTags(katas.value)
+   })
 
    return {
       katas,
       katasAreLoading,
       loadKatas,
+      hideKata,
       toggleSolution,
       setComment,
-      solutionToggling,
+      deleteComment,
+      setCommentEditState,
+      solutionIsToggling,
+      usedLanguages,
+      usedTags,
    }
 }
