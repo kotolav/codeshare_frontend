@@ -54,7 +54,7 @@
    border-radius: 5px;
    overflow-x: auto;
    overflow-y: auto;
-   max-height: 600px;
+   max-height: 90vh;
    font-family: monospace, monospace, sans-serif;
    line-height: 1.6;
    font-size: 14px;
@@ -69,6 +69,67 @@
       background: #424242;
       border-radius: 8px;
    }
+}
+
+@mixin externalLink() {
+   background: transparent url(~/assets/svg/external-link.svg) 0 0 no-repeat;
+   background-size: contain;
+   content: '';
+   height: 1em;
+   margin-left: 3px;
+   width: 1em;
+   padding-right: 1em;
+}
+
+@mixin panel() {
+   border-radius: 6px;
+   background-color: #262729;
+   color: $default_text;
+   font-family: $font_roboto;
+   line-height: 1.5;
+   box-shadow: 0 1px 12px 3px rgba(0, 0, 0, 0.92);
+   border: 1px solid #222;
+   padding: 20px;
+}
+
+@mixin standardButton() {
+   background-color: rgba(0, 0, 0, 0.4);
+   border: 1px solid #303030;
+   color: $gray_text;
+   font-size: 14px;
+   border-radius: 0.4em;
+   padding: 0.5em 1em;
+   cursor: pointer;
+   transition: background-color, color 0.2s ease-in-out;
+
+   &:not(:last-child) {
+      margin-right: 5px;
+   }
+
+   &:hover {
+      color: $default_text;
+   }
+
+   &:active {
+      transform: translateY(1px);
+      transition-duration: 0.1s;
+      background-color: rgba(0, 0, 0, 0.6);
+   }
+
+   &:disabled {
+      color: #555;
+      background-color: #1c1c22;
+      cursor: not-allowed;
+   }
+}
+
+@mixin hr() {
+   display: inline-block;
+   width: 100%;
+   border: none;
+   height: 1px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+   margin: 20px 0;
 }
 
 @mixin reset() {
