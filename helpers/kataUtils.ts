@@ -28,3 +28,25 @@ export const getSolutionById: getSolution = (katas, credentials) => {
    }
    return undefined
 }
+
+export function getUsedLanguages(katas: EditKata[]): string[] {
+   return [
+      ...new Set(
+         katas
+            .map((k) => k.solutions.map((s) => s.language))
+            .flat()
+            .sort((a: string, b: string) => a.localeCompare(b))
+      ),
+   ]
+}
+
+export function getUsedTags(katas: EditKata[]): string[] {
+   return [
+      ...new Set(
+         katas
+            .map((k) => k.tags)
+            .flat()
+            .sort((a: string, b: string) => a.localeCompare(b))
+      ),
+   ]
+}
