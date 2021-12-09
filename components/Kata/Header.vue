@@ -2,7 +2,7 @@
    <header class="header">
       <div class="header__content">
          <kata-rank :rank="rank" />
-         <h4 class="name">{{ name }}</h4>
+         <h2 class="name">{{ name }}</h2>
       </div>
       <div class="header__tags">
          <kata-tags-list :tags="tags" />
