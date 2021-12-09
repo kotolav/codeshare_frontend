@@ -30,7 +30,6 @@ export default defineComponent({
       background-color: $tag_bg_color;
       line-height: 1;
       vertical-align: bottom;
-      //box-shadow: 0 0 4px #545454;
 
       &:not(:last-child) {
          margin-right: 0.5em;
