@@ -5,7 +5,7 @@
          :key="language"
          class="language"
       >
-         <h4 class="language__title">{{ language | languageFormat }}</h4>
+         <h3 class="language__title">{{ language | languageFormat }}</h3>
          <kata-solution
             v-for="(solution, i) in solutionsList"
             :key="solution.id"
@@ -50,10 +50,18 @@ export default defineComponent({
 }
 
 .language {
+   &:not(:last-child) {
+      margin-bottom: 1.5em;
+   }
+
    &__title {
       color: $default_text;
       font-size: 15px;
       margin: 1.5em 0 0.25em;
+
+      &:first-child {
+         margin-top: 0;
+      }
    }
 }
 </style>
