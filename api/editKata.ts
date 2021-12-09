@@ -1,13 +1,10 @@
 import axios from 'axios'
 import { EditKata, EditSolution } from '~/types/types'
 
-axios.defaults.baseURL = 'http://codeshare.local/api'
-
 export const getAllKatas = (token: string) => {
    return axios
-      .get(`/${token}/katas`)
+      .get(`/edit/${token}/katas`)
       .then((response) => response.data.data)
-      .catch((error) => error)
 }
 
 export const setSolutionVisibility = (
@@ -17,18 +14,19 @@ export const setSolutionVisibility = (
    isShowing: EditSolution['isShowing']
 ) => {
    return axios
-      .patch(`/${token}/katas/${kataId}/solution/${solutionId}/visibility`, {
-         isShowing,
-      })
+      .patch(
+         `/edit/${token}/katas/${kataId}/solution/${solutionId}/visibility`,
+         {
+            isShowing,
+         }
+      )
       .then((response) => response.data)
-      .catch((error) => error)
 }
 
 export const hideKata = (token: string, kataId: EditKata['id']) => {
    return axios
-      .patch(`/${token}/katas/${kataId}/hide`)
+      .patch(`/edit/${token}/katas/${kataId}/hide`)
       .then((response) => response.data)
-      .catch((error) => error)
 }
 
 export const setSolutionComment = (
@@ -38,11 +36,10 @@ export const setSolutionComment = (
    comment: string
 ) => {
    return axios
-      .patch(`/${token}/katas/${kataId}/solution/${solutionId}/comment`, {
+      .patch(`/edit/${token}/katas/${kataId}/solution/${solutionId}/comment`, {
          comment,
       })
       .then((response) => response.data)
-      .catch((error) => error)
 }
 
 export const deleteSolutionComment = (
@@ -51,7 +48,6 @@ export const deleteSolutionComment = (
    solutionId: EditSolution['id']
 ) => {
    return axios
-      .delete(`/${token}/katas/${kataId}/solution/${solutionId}/comment`)
+      .delete(`/edit/${token}/katas/${kataId}/solution/${solutionId}/comment`)
       .then((response) => response.data)
-      .catch((error) => error)
 }
