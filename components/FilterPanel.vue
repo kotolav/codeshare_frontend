@@ -269,7 +269,7 @@ export default defineComponent({
       width: 100%;
       font-size: 18px;
       color: #fff;
-      background-color: #171719;
+      background-color: $dark_bg;
       transition: 0.3s ease-in-out;
       border-radius: 5px;
       border: 1px solid #424345;
@@ -284,7 +284,7 @@ export default defineComponent({
       display: block;
       width: 100%;
       padding: 10px 0;
-      background-color: #171719;
+      background-color: $dark_bg;
       cursor: pointer;
       color: #fff;
       font-size: 1.1em;
@@ -347,7 +347,7 @@ export default defineComponent({
 .multiselect-custom::v-deep.multiselect {
    .multiselect__tags {
       border: 1px solid #424345;
-      background: #171719;
+      background: $dark_bg;
    }
 }
 </style>

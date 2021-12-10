@@ -156,7 +156,7 @@ export default defineComponent({
       width: 100%;
       font-size: 18px;
       color: #fff;
-      background-color: #171719;
+      background-color: $dark_bg;
       transition: 0.3s ease-in-out;
       border-radius: 5px;
       border: 1px solid #424345;

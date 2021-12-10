@@ -68,6 +68,7 @@
          <br />
          <auth-panel ref="authPanel" />
       </div>
+      <Footer />
    </div>
 </template>
 
@@ -124,7 +125,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .main-page {
-   padding: 40px 0;
+   padding: 40px 0 0;
    @include xs-block() {
       padding-top: 10px;
    }

@@ -51,7 +51,7 @@ export default defineComponent({
 <style lang="scss">
 .instruction {
    padding: 0.7em;
-   background-color: #171719;
+   background-color: $dark_bg;
    border-radius: 6px;
 
    &__spoiler {
