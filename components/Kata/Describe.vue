@@ -32,6 +32,9 @@ export default defineComponent({
          }
          return ''
       }
+      renderer.link = function (href, _, text) {
+         return `<a target="_blank" class="new-window" rel="noopener" href="${href}">${text}</a>`
+      }
 
       const markDownDescription = computed(() => {
          return marked.parse(props.description, {
@@ -48,11 +51,34 @@ export default defineComponent({
 
 <style lang="scss">
 .markdown {
+   & > :first-child {
+      margin-top: 0;
+   }
+
    a {
       color: silver;
+      transition: color 0.3s ease-in-out;
+
       &:hover {
          color: #6795de;
       }
+
+      &.new-window {
+         &:after {
+            @include externalLink;
+         }
+      }
+   }
+
+   table {
+      display: block;
+      overflow: auto;
+   }
+
+   b,
+   strong {
+      font-weight: 600;
+      color: $default_bold_text;
    }
 
    p {
@@ -77,7 +103,6 @@ export default defineComponent({
    pre {
       display: block;
       overflow: auto;
-      padding: 1em;
       border-radius: 0.3em;
       margin-top: 1.7em;
       margin-bottom: 1.7em;
@@ -88,10 +113,10 @@ export default defineComponent({
       code {
          @include code;
          border: none;
-         padding: 0;
          border-radius: 5px;
          background-color: transparent;
          color: #f1f3f5;
+         padding: 1em;
       }
    }
 
@@ -102,18 +127,30 @@ export default defineComponent({
 
    h1 {
       font-size: 22px;
+      margin-top: 0;
+      margin-bottom: 0.9em;
+      line-height: 1.1;
    }
 
    h2 {
       font-size: 20px;
+      margin-top: 2em;
+      margin-bottom: 1em;
+      line-height: 1.3;
    }
 
    h3 {
       font-size: 18px;
+      margin-top: 1.6em;
+      margin-bottom: 0.6em;
+      line-height: 1.6;
    }
 
    h4 {
       font-size: 16px;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      line-height: 1.5;
    }
 
    h1,
@@ -123,6 +160,7 @@ export default defineComponent({
    h5,
    h6 {
       font-weight: 600;
+
       & + * {
          margin-top: 0;
       }
@@ -145,6 +183,14 @@ export default defineComponent({
          margin-left: 1.3em;
          margin-top: 0.5em;
          margin-bottom: 0.5em;
+      }
+   }
+
+   ol {
+      padding-left: 1.3em;
+
+      li {
+         padding-left: 0.5em;
       }
    }
 }
