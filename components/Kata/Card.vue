@@ -13,7 +13,6 @@
          <hr class="kata__hr" />
          <kata-solutions-list :solutions="data.solutions" />
       </div>
-      <kata-footer></kata-footer>
    </article>
 </template>
 
@@ -59,7 +58,7 @@ export default defineComponent({
    border-radius: 5px;
    background-color: #262729;
    color: $default_text;
-   font-family: 'Lato', sans-serif;
+   font-family: $font_lato;
    line-height: 1.5;
    box-shadow: 0 1px 12px 3px rgba(0, 0, 0, 0.92);
    border: 1px solid #222;
@@ -69,10 +68,15 @@ export default defineComponent({
    }
 
    &__hr {
+      display: inline-block;
+      width: 100%;
       border: none;
       height: 1px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.13);
       margin: 20px 0;
+   }
+
+   &__solution-section {
    }
 }
 </style>
