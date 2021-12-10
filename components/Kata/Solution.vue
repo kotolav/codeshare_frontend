@@ -1,8 +1,8 @@
 <template>
    <div class="solution" :class="currentClass">
-      <h5 v-if="variantNumber" class="solution__variant">
+      <h4 v-if="variantNumber" class="solution__variant">
          {{ variantNumber }}-й вариант:
-      </h5>
+      </h4>
       <pre><code class="hljs" v-html="formattedCode"></code></pre>
       <kata-solution-footer
          :solution="solution"
@@ -22,18 +22,17 @@
 <script lang="ts">
 import {
    computed,
+   defineComponent,
    inject,
+   nextTick,
    provide,
    ref,
-   nextTick,
-   defineComponent,
-   useStore,
    useRoute,
 } from '@nuxtjs/composition-api'
 import hljs from 'highlight.js/lib/common'
 import { EditKata, EditSolution } from '~/types/types'
 import SolutionEditComment from '~/components/Kata/SolutionEditComment.vue'
-import { EditKataRootState } from '~/store/editKata'
+import { useEditKatas } from '~/helpers/editKatas'
 
 export default defineComponent({
    props: {
@@ -51,23 +50,29 @@ export default defineComponent({
    setup(props) {
       provide('solutionId', props.solution.id)
       const route = useRoute()
-      const kataId = inject<EditKata['id']>('kataId')
-      const store = useStore<EditKataRootState>()
+      const kataId = inject<EditKata['id']>('kataId', '')
+      const canEdit = inject('canEdit', false)
+      const { setCommentEditState } = useEditKatas(route.value.params.id)
 
       const editCommentComponent =
          ref<InstanceType<typeof SolutionEditComment>>()
 
       const currentClass = computed(
          () =>
-            'solution--' + (props.solution.isShowing ? 'formatted' : 'hidden')
+            'solution--' +
+            (props.solution.isShowing || !canEdit ? 'formatted' : 'hidden')
       )
 
       const formattedCode = computed(() => {
-         // hljs.highlightAuto(props.solution.code).value
-         // return props.solution.code
-         return hljs.highlight(props.solution.code, {
-            language: props.solution.language,
-         }).value
+         let code: string
+         try {
+            code = hljs.highlight(props.solution.code, {
+               language: props.solution.language,
+            }).value
+         } catch (error) {
+            code = hljs.highlightAuto(props.solution.code).value
+         }
+         return code
       })
 
       const showComment = computed(
@@ -75,12 +80,8 @@ export default defineComponent({
       )
 
       const onAddComment = () => {
-         store.dispatch('editKata/setCommentEditing', {
-            token: route.value.params.id,
-            kataId,
-            solutionId: props.solution.id,
-            isEditing: true,
-         })
+         const solutionId = props.solution.id
+         setCommentEditState({ kataId, solutionId }, true)
          nextTick(() =>
             nextTick(() => {
                editCommentComponent?.value?.setFocus()
