@@ -4,12 +4,16 @@
          <a
             :href="codewarsLink"
             target="_blank"
+            rel="noopener noreferrer"
             class="list__link list__link--new-window"
             >Открыть задачу на Codewars</a
          >
       </li>
       <li v-if="showEditKataActions" class="list__item">
-         <a class="list__link" rel="noreferrer" @click.prevent="hideKata"
+         <a
+            class="list__link"
+            :class="{ 'list__link--inactive': solutionIsToggling }"
+            @click.prevent="hideKata"
             >Скрыть эту задачу</a
          >
       </li>
@@ -22,9 +26,8 @@ import {
    defineComponent,
    inject,
    useRoute,
-   useStore,
 } from '@nuxtjs/composition-api'
-import { EditKataRootState } from '~/store/editKata'
+import { useEditKatas } from '~/helpers/editKatas'
 
 export default defineComponent({
    props: {
@@ -40,8 +43,10 @@ export default defineComponent({
    },
 
    setup(props) {
-      const store = useStore<EditKataRootState>()
       const route = useRoute()
+      const { solutionIsToggling, hideKata: useHideKata } = useEditKatas(
+         route.value.params.id
+      )
       const codewarsLink = computed(
          () => `https://www.codewars.com/kata/${props.kataId}`
       )
@@ -52,15 +57,15 @@ export default defineComponent({
       )
 
       const hideKata = async () => {
-         await store.dispatch('editKata/hideKata', {
-            token: route.value.params.id,
-            kataId: props.kataId,
-         })
+         if (!solutionIsToggling.value) {
+            await useHideKata({ kataId: props.kataId })
+         }
       }
 
       return {
          codewarsLink,
          hideKata,
+         solutionIsToggling,
          showEditKataActions,
       }
    },
@@ -72,7 +77,7 @@ export default defineComponent({
    display: flex;
    flex-wrap: wrap;
    font-size: 15px;
-   font-family: 'Roboto', sans-serif;
+   font-family: $font_roboto;
    margin-top: 10px;
 
    &__item {
@@ -100,21 +105,23 @@ export default defineComponent({
          color: $link_hover_color;
       }
 
+      &--inactive {
+         color: $gray_text;
+
+         &:hover {
+            color: inherit;
+         }
+      }
+
       &--new-window {
          &:after {
-            display: inline-block;
-            background: transparent url(~/assets/svg/external-link.svg) 0 0
-               no-repeat;
-            background-size: 16px;
-            content: '';
-            height: 16px;
-            margin-left: 3px;
-            width: 16px;
+            @include externalLink;
          }
       }
 
       &--inactive {
          color: $gray_text;
+
          &:hover {
             color: inherit;
          }
