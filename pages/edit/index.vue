@@ -147,6 +147,7 @@
             />
          </div>
       </template>
+      <Footer />
    </div>
 </template>
 
@@ -349,7 +350,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .edit-page {
-   padding: 40px 0;
+   padding: 40px 0 0;
    @include xs-block() {
       padding-top: 0;
    }
@@ -369,7 +370,7 @@ export default defineComponent({
    &__share-link {
       font-size: 14px;
       border-radius: 6px;
-      background-color: #171719;
+      background-color: $dark_bg;
       padding: 0.5em 1em;
       word-break: break-all;
       margin-top: 0.5em;
@@ -437,7 +438,7 @@ export default defineComponent({
 
       code {
          display: block;
-         background-color: #171719;
+         background-color: $dark_bg;
          color: $green_accent;
          padding: 0.5em 1em;
          border-radius: 4px;

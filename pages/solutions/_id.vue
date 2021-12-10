@@ -58,6 +58,7 @@
             @pageChange="onPageChange($event, true)"
          />
       </div>
+      <Footer />
    </div>
 </template>
 
@@ -154,7 +155,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .edit-page {
-   padding: 40px 0;
+   padding: 40px 0 0;
    @include xs-block() {
       padding-top: 0;
    }
