@@ -14,7 +14,6 @@
 
 <style lang="scss" scoped>
 .footer {
-   margin-top: 50px;
    background-color: #2e2e2e;
    box-shadow: -5px 0 5px #000;
    &__link {

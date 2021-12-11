@@ -68,7 +68,6 @@
          <br />
          <auth-panel ref="authPanel" />
       </div>
-      <Footer />
    </div>
 </template>
 

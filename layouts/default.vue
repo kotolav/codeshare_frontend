@@ -1,6 +1,7 @@
 <template>
    <div class="page">
-      <Nuxt />
+      <Nuxt class="page__content" />
+      <Footer class="page__footer" />
    </div>
 </template>
 
@@ -23,5 +24,14 @@ export default defineComponent({
    );
    background-attachment: fixed;
    min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   &__content {
+      flex: 1 0 auto;
+   }
+   &__footer {
+      flex-shrink: 0;
+      margin-top: 50px;
+   }
 }
 </style>

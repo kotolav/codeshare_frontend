@@ -147,7 +147,6 @@
             />
          </div>
       </template>
-      <Footer />
    </div>
 </template>
 

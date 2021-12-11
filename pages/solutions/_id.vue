@@ -58,7 +58,6 @@
             @pageChange="onPageChange($event, true)"
          />
       </div>
-      <Footer />
    </div>
 </template>
 
